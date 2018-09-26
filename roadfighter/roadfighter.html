@@ -1,0 +1,397 @@
+<canvas id="ctx" width="500"  height="500" ></canvas>
+<p id="demo"></p>
+<style>
+#ctx
+{
+	border:1px solid black;
+	background:rgb(34,176,77);
+	
+	
+}
+#ctx:hover
+{
+cursor:none;
+}
+</style>
+<script>
+var score=0;
+var framecount=0;
+var framecountcity=0;
+var framecountcity2=0;
+var framecountenemy1=0;
+var ctx=document.getElementById('ctx').getContext('2d');
+ctx.font="30px Arial";
+var playercarimage=new Image();
+playercarimage.src="Audi.png";
+var house1image=new Image();
+house1image.src="house1.png";
+var enemy1image=new Image();
+enemy1image.src="enemy1.png";
+
+//gamearea
+var h=500;
+var w=500;
+var starttime=Date.now();
+
+
+//player object
+var p={
+ x:250,
+ spdx:30,
+ y:4,
+ spdy:5,
+ name:'P',
+ hp:10,
+ height:30,
+ width:30,
+};
+///enemy car 1
+var enemy1List={};
+enemy1generator();
+
+function enemy1(id,x,spdx,y,spdy,height,width)
+{
+var e3={
+ x:x,
+ spdx:spdx,
+ y:y,
+ spdy:spdy,
+ name:'E',
+ id:id,
+ height:height,
+ width:width, 
+};
+enemy1List[id]=e3;
+}
+
+function enemy1generator()
+{
+var x=(Math.random()*(400-100+1)+100);
+var spdx=0;
+var y=0;
+var spdy=20;
+var name=Math.random();
+var id=Math.random();
+var height=60;
+var width=50;
+enemy1(id,x,spdx,y,spdy,height,width)
+}
+function drawenemy1(p)
+{ctx.fillStyle="green";
+ctx.drawImage(enemy1image,p.x,p.y);
+  ctx.fillStyle="black";
+}
+function enemy1Position(p)
+{
+//entity p movememnt
+ p.x=p.x+p.spdx;
+ p.y=p.y+p.spdy;
+    
+}
+function updateEnitityenemy1(p)
+{
+drawenemy1(p);
+enemy1Position(p); 
+}
+//mousemovement
+document.onmousemove=function(mouse)
+{
+
+var mouseX=mouse.clientX-8;
+var mouseY=mouse.clientY-8; 
+if(mouseX<100)
+  mouseX=100;
+if(mouseX>357)
+  mouseX=357;
+
+
+
+p.x=mouseX;
+p.y=mouseY;
+
+
+
+}
+function getDistanceBetween(e1,e2)
+{
+var vx=e1.x - e2.x;
+var vy=e1.y - e2.y;
+return Math.sqrt(vx*vx+vy*vy);
+}
+function testCollision(e1,e2)
+{
+
+var d=getDistanceBetween(e1,e2);
+    return d<10;
+}
+    
+
+
+
+
+
+function testCollisionRectRect(rect1,rect2)
+{
+
+return rect1.x <= rect2.x + rect2.width 
+        && rect2.x <= rect1.x + rect1.width 
+		&&  rect1.y <= rect2.y + rect2.height 
+		&&  rect2.y <= rect1.y +rect1.height;
+
+
+}
+
+
+
+
+
+
+
+var roadList={};
+roadgenerator();
+roadgenerator();
+roadgenerator();
+function road(id,x,spdx,y,spdy,height,width)
+{
+var e3={
+ x:x,
+ spdx:spdx,
+ y:y,
+ spdy:spdy,
+ name:'E',
+ id:id,
+ height:height,
+ width:width, 
+};
+roadList[id]=e3;
+}
+
+function roadgenerator()
+{
+var x=250;
+var spdx=0;
+var y=0;
+var spdy=20;
+var name=Math.random();
+var id=Math.random();
+var height=10;
+var width=60;
+road(id,x,spdx,y,spdy,height,width)
+}
+function updateEnitityroad(p)
+{
+drawroad(p);
+roadPosition(p); 
+}
+function drawplayer(p)
+{
+ctx.fillStyle="red";
+ctx.drawImage(playercarimage,p.x,415);
+ ctx.fillStyle="black"; 
+}
+function drawroad(p)
+{ctx.fillStyle="white";
+ctx.fillRect(p.x,p.y,p.height,p.width);
+  ctx.fillStyle="black";
+}
+function roadPosition(p)
+{
+//entity p movememnt
+ p.x=p.x+p.spdx;
+ p.y=p.y+p.spdy;
+ 
+    
+}
+ //////////////////////////////////city around sides
+var cityList={};
+citygenerator();
+citygenerator();
+citygenerator();
+function city(id,x,spdx,y,spdy,height,width)
+{
+var e3={
+ x:x,
+ spdx:spdx,
+ y:y,
+ spdy:spdy,
+ name:'E',
+ id:id,
+ height:height,
+ width:width, 
+};
+cityList[id]=e3;
+}
+
+function citygenerator()
+{
+var x=20;
+var spdx=0;
+var y=0;
+var spdy=20;
+var name=Math.random();
+var id=Math.random();
+var height=20;
+var width=50;
+city(id,x,spdx,y,spdy,height,width)
+}
+function drawcity(p)
+{ctx.fillStyle="green";
+ctx.drawImage(house1image,p.x,p.y);
+  ctx.fillStyle="black";
+}
+function cityPosition(p)
+{
+//entity p movememnt
+ p.x=p.x+p.spdx;
+ p.y=p.y+p.spdy;
+    
+}
+function updateEnititycity(p)
+{
+drawcity(p);
+cityPosition(p); 
+}
+var framecountcity=0;
+//city on right sides
+var cityList2={};
+citygenerator2();
+citygenerator2();
+citygenerator2();
+function city2(id,x,spdx,y,spdy,height,width)
+{
+var e3={
+ x:x,
+ spdx:spdx,
+ y:y,
+ spdy:spdy,
+ name:'E',
+ id:id,
+ height:height,
+ width:width, 
+};
+cityList2[id]=e3;
+}
+
+function citygenerator2()
+{
+var x=410;
+var spdx=0;
+var y=0;
+var spdy=20;
+var name=Math.random();
+var id=Math.random();
+var height=20;
+var width=50;
+city2(id,x,spdx,y,spdy,height,width)
+}
+function drawcity2(p)
+{ctx.fillStyle="green";
+ctx.drawImage(house1image,p.x,p.y);
+  ctx.fillStyle="black";
+}
+function cityPosition2(p)
+{
+//entity p movememnt
+ p.x=p.x+p.spdx;
+ p.y=p.y+p.spdy;
+   
+}
+function updateEnititycity2(p)
+{
+drawcity2(p);
+cityPosition2(p); 
+}   
+function update()
+{
+ctx.clearRect(0,0,h,w);
+//road rectangle
+ctx.fillStyle="grey";
+ctx.fillRect(100,0,300,500);
+ctx.fillStyle="black";
+//roadborder-left
+ctx.fillStyle="black";
+ctx.fillRect(90,0,10,500);
+ctx.fillStyle="black";
+//roadborder-right
+ctx.fillStyle="black";
+ctx.fillRect(400,0,10,500);
+ctx.fillStyle="black";
+score++;
+framecount++;
+framecountcity++;
+framecountcity2++;
+framecountenemy1++;
+if(framecount%10==0)
+   roadgenerator();//enemy respawn
+if(framecountcity%4==0)//for left side
+   citygenerator();
+if(framecountcity2%4==0)//for right side
+   citygenerator2();
+if(framecountenemy1%30==0)
+   enemy1generator();
+   
+drawplayer(p);
+for(var key in roadList)
+{
+updateEnitityroad(roadList[key]);
+}
+for(var key in cityList)
+{
+updateEnititycity(cityList[key]);
+}
+for(var key in cityList2)
+{
+updateEnititycity2(cityList2[key]);
+}
+for(var key in enemy1List)
+{
+updateEnitityenemy1(enemy1List[key]);
+var isColliding=testCollision(p,enemy1List[key]);
+
+if(isColliding)
+{
+
+p.hp=p.hp-1;
+ delete enemy1List[key];
+
+if(p.hp<=0)
+{
+var timesurvived=Date.now()-starttime;
+
+
+ctx.fillStyle="rgb(220,200,200)";
+
+ctx.fillRect(0,0,500,500);
+
+ctx.fillStyle="white";
+ctx.fillText("You lost!",180,250);
+ctx.fillText("Score: "+score,180,300);
+starttime=Date.now();
+clearInterval(timeout);
+
+
+
+}
+
+}
+
+}
+ctx.fillText(p.hp+" HP",0,30);
+ctx.fillText("Score: "+score,200,30);
+}
+var timeout=setInterval(update,45);
+
+
+
+
+
+
+
+
+//road size is from 100 to 300
+
+
+
+
+
+</script>
