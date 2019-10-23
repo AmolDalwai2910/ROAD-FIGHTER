@@ -1,4 +1,4 @@
-<canvas id="ctx" width="500"  height="500" ></canvas>
+<canvas id="ctx" width="600"  height="600" ></canvas>
 <p id="demo"></p>
 <style>
 #ctx
@@ -29,8 +29,8 @@ var enemy1image=new Image();
 enemy1image.src="enemy1.png";
 
 //gamearea
-var h=500;
-var w=500;
+var h=600;
+var w=600;
 var starttime=Date.now();
 
 
@@ -264,7 +264,7 @@ var e3={
  spdx:spdx,
  y:y,
  spdy:spdy,
- name:'E',
+ name:'Enemy',
  id:id,
  height:height,
  width:width, 
@@ -316,7 +316,7 @@ ctx.fillStyle="black";
 ctx.fillStyle="black";
 ctx.fillRect(400,0,10,500);
 ctx.fillStyle="black";
-score++;
+score=score+5;
 framecount++;
 framecountcity++;
 framecountcity2++;
